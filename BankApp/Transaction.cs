@@ -17,12 +17,16 @@ namespace BankApp
     {
         [Key]
         public int TransactionId { get; set; }
+        [Required]
         public DateTime TransactionDate { get; set; }
         public string Description{ get; set; }
+        [Required]
         public decimal TansactionAmount { get; set; }
+        [Required]
         public TransactionType TypeofTransaction { get; set; }
 
         [ForeignKey("Account")]
+        [Required]
         public int AccountNumber{ get; set; }
         public virtual Account Account { get; set; }
 
