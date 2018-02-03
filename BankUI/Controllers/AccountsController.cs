@@ -29,7 +29,7 @@ namespace BankUI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Account account = db.Accounts.Find(id);
+            Account account = Bank.FindAccount(id.Value);
             if (account == null)
             {
                 return HttpNotFound();
@@ -66,7 +66,7 @@ namespace BankUI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Account account = db.Accounts.Find(id);
+            Account account = Bank.FindAccount(id.Value);
             if (account == null)
             {
                 return HttpNotFound();
@@ -74,23 +74,35 @@ namespace BankUI.Controllers
             return View(account);
         }
 
+        // GET: Accounts/Deposit/5
+        public ActionResult Deposit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Account account = Bank.FindAccount(id.Value);
+            if (account == null)
+            {
+                return HttpNotFound();
+            }
+            return View(account);
+        }
         // POST: Accounts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "AccountNumber,EmailAddress,AccountName,AccountType,Balance")] Account account)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(account).State = EntityState.Modified;
-                db.SaveChanges();
+                Bank.EditAccount(account);
                 return RedirectToAction("Index");
             }
             return View(account);
         }
 
-        // GET: Accounts/Delete/5
+   /*   // GET: Accounts/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -115,6 +127,7 @@ namespace BankUI.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        */
 
         protected override void Dispose(bool disposing)
         {
